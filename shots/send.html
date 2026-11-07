@@ -1,0 +1,8 @@
+<!doctype html><meta charset="utf-8"><title>shots</title>
+<script>
+// Temporary helper: hands the screenshot files to the page that embeds this one (App Store Connect upload).
+const names = new URLSearchParams(location.search).get('n').split(',');
+Promise.all(names.map(n => fetch(n, {cache: 'no-store'}).then(r => r.arrayBuffer()).then(buf => ({name: n, buf}))))
+  .then(files => parent.postMessage({ddshots: files}, '*'))
+  .catch(e => parent.postMessage({ddshotsError: String(e)}, '*'));
+</script>
